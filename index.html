@@ -969,7 +969,8 @@
                     color: '#4ecdc4',
                     opacity: 0.8,
                     dashArray: '5, 5'
-                }
+                },
+                interactive: false  // Allow clicks to pass through to buildings
             });
         }
 
@@ -998,12 +999,13 @@
             if (newScale === 'district' && layers.district) {
                 map.addLayer(layers.district);
             } else if (newScale === 'building') {
-                if (layers.building) {
-                    map.addLayer(layers.building);
-                }
-                // Add boundary layer together with buildings
+                // Add boundary layer first (behind buildings)
                 if (layers.boundary) {
                     map.addLayer(layers.boundary);
+                }
+                // Add building layer on top
+                if (layers.building) {
+                    map.addLayer(layers.building);
                 }
             }
 
