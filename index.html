@@ -571,6 +571,41 @@
             display: inline-block;
             vertical-align: middle;
         }
+
+        /* Zoom hint message */
+        .zoom-hint {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 26, 46, 0.95);
+            padding: 12px 24px;
+            border-radius: 25px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .zoom-hint.hidden {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+            pointer-events: none;
+        }
+
+        .zoom-hint-text {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .zoom-hint-icon {
+            color: #4ecdc4;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -582,6 +617,12 @@
 
     <!-- Map Container -->
     <div id="map"></div>
+
+    <!-- Zoom Hint -->
+    <div class="zoom-hint" id="zoomHint">
+        <span class="zoom-hint-icon">🔍</span>
+        <span class="zoom-hint-text">Zoom in to show building scale</span>
+    </div>
 
     <!-- Legend -->
     <div class="legend" id="legend">
@@ -1011,6 +1052,16 @@
 
             currentScale = newScale;
             updateLegend();
+            updateZoomHint();
+        }
+
+        function updateZoomHint() {
+            const zoomHint = document.getElementById('zoomHint');
+            if (currentScale === 'district') {
+                zoomHint.classList.remove('hidden');
+            } else {
+                zoomHint.classList.add('hidden');
+            }
         }
 
         // =====================
